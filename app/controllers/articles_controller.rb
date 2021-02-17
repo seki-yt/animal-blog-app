@@ -1,10 +1,11 @@
 class ArticlesController < ApplicationController
   #=> コントローラー名は複数系で書く
   def index
-   @article = Article.first
+   @articles = Article.all
   end
+  #=> indexは一覧を表示させるのに使われる
 
-  def about
-    render 'home/about'
+  def show
+    @article = Article.find(params[:id])
   end
 end
