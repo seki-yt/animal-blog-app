@@ -1,12 +1,13 @@
 class ArticlesController < ApplicationController
   #=> コントローラー名は複数系で書く
+  before_action :set_article, only:[:show, :edit, :update]
+
   def index
    @articles = Article.all
   end
   #=> indexは一覧を表示させるのに使われる
 
   def show
-    @article = Article.find(params[:id])
   end
 
   def new
@@ -26,13 +27,10 @@ class ArticlesController < ApplicationController
   end
 
   def edit
-    @article = Article.find(params[:id])
   end
 
   def update
     #=>まずは対象の値を持ってくる↓
-    @article = Article.find(params[:id])
-    #=>putでrequestがくるためparams[:id]が取れる
     if @article.update(article_params)
       redirect_to article_path(@article), notice: '更新できました'
     else
@@ -43,8 +41,9 @@ class ArticlesController < ApplicationController
 
   def destroy
     article = Article.find(params[:id])
+    #=> @　付けないのはViewに表示しないため
     article.destroy!
-    #=> ! つける理由は例外(アプリケーションがおかしい)が発生する
+    #=> ! つける理由は例外(アプリケーションがおかしい)が発生させないため
     redirect_to root_path, notice: '削除に成功しました'
   end
 
@@ -54,4 +53,10 @@ class ArticlesController < ApplicationController
     #=> requireでarticleがないとだめと要求
     #=> permitでarticleのtitleとcontentだけを許す
   end
+
+  def set_article
+    @article = Article.find(params[:id])
+    #=> @articleにしてるのはインスタンス変数のため
+  end
+
 end
