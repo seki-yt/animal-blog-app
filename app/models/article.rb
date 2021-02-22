@@ -12,7 +12,7 @@ class Article < ApplicationRecord
   validates :title, presence: true
   #=> presence は入力されてるかcheck
   validates :title, length: { minimum: 2, maximum: 100 }
-  #=> lengthは文字の長さを指定 
+  #=> lengthは文字の長さを指定
   validates :title, format: { with: /\A(?!\@)/ }
 
   validates :content, presence: true
