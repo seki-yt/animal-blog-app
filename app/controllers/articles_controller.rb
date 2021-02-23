@@ -1,7 +1,8 @@
 class ArticlesController < ApplicationController
   #=> コントローラー名は複数系で書く
-  before_action :set_article, only:[:show, :edit, :update]
+  before_action :set_article, only:[:show,]
   before_action :authenticate_user!, only:[:new, :create, :edit,:update, :destroy]
+  before_action :set_user_article, only:[:edit, :update]
 
   def index
    @articles = Article.all
@@ -12,12 +13,12 @@ class ArticlesController < ApplicationController
   end
 
   def new
-    @article = Article.new
-    #=> Article.newでデータを入れる空の箱を作ってます
+    @article = current_user.articles.build
+    #=> current_user.articles.buildでデータを入れる空の箱を作ってます
   end
 
   def create
-    @article = Article.new(article_params)
+    @article = current_user.articles.build(article_params)
     if @article.save
       # => これで保存するよ
       redirect_to article_path(@article), notice: '保存できたよ'
@@ -31,7 +32,6 @@ class ArticlesController < ApplicationController
   end
 
   def update
-    #=>まずは対象の値を持ってくる↓
     if @article.update(article_params)
       redirect_to article_path(@article), notice: '更新できました'
     else
@@ -41,7 +41,7 @@ class ArticlesController < ApplicationController
   end
 
   def destroy
-    article = Article.find(params[:id])
+    article = current_user.articles.find(params[:id])
     #=> @　付けないのはViewに表示しないため
     article.destroy!
     #=> ! つける理由は例外(アプリケーションがおかしい)が発生させないため
@@ -60,4 +60,9 @@ class ArticlesController < ApplicationController
     #=> @articleにしてるのはインスタンス変数のため
   end
 
+  def set_user_article
+    @article = current_user.articles.find(params[:id])
+    #=> 対象の値を持ってくる
+    #=> 必ずcurrent_user.articlesから持ってくるようにする。Article.findにしてしまうと全部もって来てしまうため他のユーザーのデータも変更できてしまう。
+  end
 end
