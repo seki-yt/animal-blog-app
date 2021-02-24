@@ -10,6 +10,7 @@ class ArticlesController < ApplicationController
   #=> indexは一覧を表示させるのに使われる
 
   def show
+    @comment = @article.comments
   end
 
   def new
