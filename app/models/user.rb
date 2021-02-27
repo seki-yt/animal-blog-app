@@ -23,12 +23,32 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   
   has_many :articles, dependent: :destroy
+  has_one :profile, dependent: :destroy
+  #=> rails Activerecordでつなぐために書いている
+
+  delegate :age, :birthday, :gender, to: :profile, allow_nil: true
+  #=> delegateは簡単にbirthdayなどのメゾットを作れる
+  #=> allow_nil: true でぼっち演算子を勝手に付けてくれる
 
   def has_written?(article)
     articles.exists?(id: article.id)
   end
 
   def display_name
-    self.email.split('@').first
+    # ぼっち演算子
+    # profileがnilじゃなかったらnicknameを使うとなる
+    profile&.nickname || self.email.split('@').first
+  end
+
+  def prepare_profile
+    profile || build_profile
+  end
+
+  def avatar_image
+    if profile&.avater&.attached?
+      profile.avater
+    else
+      'default-avatar.png'
+    end
   end
 end
