@@ -14,6 +14,9 @@
 #  index_articles_on_user_id  (user_id)
 #
 class Article < ApplicationRecord
+
+  has_one_attached :eyecatch
+  
   validates :title, presence: true
   #=> presence は入力されてるかcheck
   validates :title, length: { minimum: 2, maximum: 100 }
@@ -28,6 +31,7 @@ class Article < ApplicationRecord
   #=> 独自のvalidateの場合はsは付けない
 
   has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
   belongs_to :user
 
   def display_created_at
@@ -38,6 +42,9 @@ class Article < ApplicationRecord
     user.display_name
   end
 
+  def like_count
+    likes.count
+  end
   private
   def validate_title_and_content_length
     char_count = self.title.length + self.content.length

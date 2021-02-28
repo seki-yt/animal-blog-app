@@ -51,7 +51,7 @@ class ArticlesController < ApplicationController
 
   private
   def article_params
-    params.require(:article).permit(:title, :content)
+    params.require(:article).permit(:title, :content, :eyecatch)
     #=> requireでarticleがないとだめと要求
     #=> permitでarticleのtitleとcontentだけを許す
   end
