@@ -2,12 +2,12 @@
 #
 # Table name: articles
 #
-#  id         :integer          not null, primary key
+#  id         :bigint           not null, primary key
 #  content    :text             not null
 #  title      :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  user_id    :integer          not null
+#  user_id    :bigint           not null
 #
 # Indexes
 #
@@ -45,6 +45,7 @@ class Article < ApplicationRecord
   def like_count
     likes.count
   end
+  
   private
   def validate_title_and_content_length
     char_count = self.title.length + self.content.length

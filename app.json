@@ -1,0 +1,16 @@
+{
+  "name": "animal blog app",
+  "description": "This is animal-blog-app",
+  "keywords": [],
+  "website": "",
+  "repository": "https://github.com/seki-yt/animal-blog-app",
+  "env": {},
+  "addons": [
+    "heroku-postgresql:hobby-dev"
+  ],
+  "buildpacks": [{
+    "url": "heroku/nodejs"
+  }, {
+    "url": "heroku/ruby"
+  }]
+}
